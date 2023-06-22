@@ -3,10 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include <types.h>
+#include <string.h>
 
  /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -24,6 +22,10 @@ typedef struct stack_s
         struct stack_s *next;
 } stack_t;
 
+void f_push(stack_t **head, unsigned int counter);
+void f_pall(stack_t **head, unsigned int counter);
+void f_pint(stack_t **head, unsigned int counter);
+size_t interpret(instruction_t instr);
 /**
  * struct instruction_s - opcode and its function
  * @opcode: the opcode
@@ -37,7 +39,6 @@ typedef struct instruction_s
         char *opcode;
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
-
 
 #endif
 /*MONTY_H*/
