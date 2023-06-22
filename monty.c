@@ -1,4 +1,4 @@
-#include <monty.h>
+#include "monty.h"
 
 /**
  * main - Entry point
@@ -8,34 +8,36 @@
  * Return: nothing
  */
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-    stack_t stack;
-    instruction_t instr;
+    stack_t *stack = malloc(sizeof(stack_t));
+    instruction_t *instr = malloc(sizeof(instruction_t));
 	FILE *file;
-    size_t current_line;
-
+    int current_line;
+ 
     if (argc != 2)
     {
         perror("USAGE: monty file\n");
         exit(EXIT_FAILURE);
     }
-	file = fopen(argv[1], 'r');
+	file = fopen(argv[1], "r");
 	if (file == NULL)
 	{
-		perror("Error: Can't open file %s", argv[1]);
+		perror("Error: ");
+        printf("Can't open file %s", argv[1]);
 		exit(EXIT_FAILURE);
     }
-    //main loop
     for (current_line = 1; !feof(file); current_line ++)
     {
-        fgets(instr.opcode, 1024, file);
-        if (interpret(instr) == 0)
+        fgets(instr->opcode, 1024, file);
+        if (interpret(*instr) == 0)
         {
-            perror("L%d: unknown instruction %s", current_line, instr.opcode);
+            perror("L");
+            printf("%d: unknown instruction %s", current_line, instr->opcode);
             exit(EXIT_FAILURE);
         }
-        
+        printf("%d\n",num);
+        instr->f(&stack, current_line);
     }
-
+    return(1);
 }

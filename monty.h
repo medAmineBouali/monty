@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <types.h>
+#include <ctype.h>
 #include <string.h>
 
  /**
@@ -22,10 +22,10 @@ typedef struct stack_s
         struct stack_s *next;
 } stack_t;
 
+extern int num;
 void f_push(stack_t **head, unsigned int counter);
 void f_pall(stack_t **head, unsigned int counter);
 void f_pint(stack_t **head, unsigned int counter);
-size_t interpret(instruction_t instr);
 /**
  * struct instruction_s - opcode and its function
  * @opcode: the opcode
@@ -40,5 +40,6 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+size_t interpret(instruction_t instr);
 #endif
 /*MONTY_H*/
