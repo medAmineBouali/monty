@@ -6,9 +6,29 @@
  * @counter: ffddf
  * Return: void
  */
-void f_push(stack_t **head, unsigned int counter)
-{
-	
+void f_push(stack_t **stack, unsigned int counter)
+{	
+	stack_t *new_node = malloc(sizeof(stack_t));
+
+	(void)counter;
+    if (new_node == NULL)
+    {
+        fprintf(stderr, "Error: malloc failed\n");
+		free(stack);
+        exit(EXIT_FAILURE);
+    }
+
+    new_node->n = num;
+    new_node->prev = NULL;
+    new_node->next = *stack;
+
+    if (*stack != NULL)
+    {
+        (*stack)->prev = new_node;
+    }
+
+    *stack = new_node;
+    free(new_node);
 }
 
 /**
@@ -44,7 +64,6 @@ void f_pint(stack_t **head, unsigned int counter)
 	if (*head == NULL)
 	{
 		fprintf(stderr, "L%u: can't pint, stack empty\n", counter);
-		cleanup_resources(head);
 		exit(EXIT_FAILURE);
 	}
 
