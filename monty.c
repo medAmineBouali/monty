@@ -10,34 +10,48 @@
 
 int main(int argc, char *argv[])
 {
-    stack_t *stack = malloc(sizeof(stack_t));
-    instruction_t *instr = malloc(sizeof(instruction_t));
-	FILE *file;
+    stack_t *stack = (stack_t *)malloc(sizeof(stack_t));
+    instruction_t instr;
+    FILE *file;
     int current_line;
- 
-    if (argc != 2)
+
+    instr.opcode = NULL;
+    instr.f = NULL;
+    stack->next = NULL;
+    stack->prev = NULL;
+
+    if(!stack)
     {
-        perror("USAGE: monty file\n");
+        fprintf(stderr,"Memory allocation error.\n");
+        free(stack);
         exit(EXIT_FAILURE);
     }
+    if (argc != 2)
+    {
+        fprintf(stderr, "USAGE: monty file\n");
+        exit(EXIT_FAILURE);
+    }
+    
 	file = fopen(argv[1], "r");
 	if (file == NULL)
 	{
-		perror("Error: ");
-        printf("Can't open file %s", argv[1]);
+        fprintf(stderr,"Error: Can't open file %s", argv[1]);
 		exit(EXIT_FAILURE);
     }
+    
     for (current_line = 1; !feof(file); current_line ++)
     {
-        fgets(instr->opcode, 1024, file);
-        if (interpret(*instr) == 0)
+        fgets(instr.opcode, 1024, file);
+        printf("%s",instr.opcode);
+
+        if (interpret(instr) == 0)
         {
-            perror("L");
-            printf("%d: unknown instruction %s", current_line, instr->opcode);
+            fprintf(stderr,"L%d: unknown instruction %s", current_line, instr.opcode);
             exit(EXIT_FAILURE);
         }
-        printf("%d\n",num);
-        instr->f(&stack, current_line);
+        instr.f(&stack, current_line);
     }
+    fclose(file);
+    free(stack);
     return(1);
 }

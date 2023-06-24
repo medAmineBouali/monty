@@ -13,10 +13,14 @@ size_t interpret(instruction_t instr)
     char *n;
     if (strcmp("push", op) == 0)
     {
+        printf("push read");
         n = strtok(NULL, " ");
+        printf("n assigned next element");
         if(strtok(NULL, " ") == NULL && isdigit(*n))
         {
+            printf("format correct");
             instr.f = &f_push;
+            printf("function connected");
             num = atoi(n);
         }
         else
@@ -26,7 +30,11 @@ size_t interpret(instruction_t instr)
         if(strtok(NULL, " ") == NULL)
         {
             if (strcmp("pall", op) == 0)
+            {
+                printf("pall");
                 instr.f = &f_pall;
+                printf("pall");
+            }
             if (strcmp("pint", op) == 0)
                 instr.f = &f_pint;
         } else
