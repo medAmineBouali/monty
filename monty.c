@@ -1,57 +1,46 @@
 #include "monty.h"
 
+bus_t info = {NULL, NULL, NULL, 0};
 /**
- * main - Entry point
- * @argc: number of argumensts
- * @argv: arguments
- *
- * Return: nothing
- */
-
+* main - monty code interpreter
+* @argc: number of arguments
+* @argv: monty file location
+* Return: 0 on success
+*/
 int main(int argc, char *argv[])
 {
-    stack_t *stack = (stack_t *)malloc(sizeof(stack_t));
-    instruction_t instr;
-    FILE *file;
-    int current_line;
+	char *content;
+	FILE *file;
+	size_t size = 0;
+	ssize_t read_line = 1;
+	stack_t *stack = NULL;
+	unsigned int counter = 0;
 
-    instr.opcode = NULL;
-    instr.f = NULL;
-    stack->next = NULL;
-    stack->prev = NULL;
-
-    if(!stack)
-    {
-        fprintf(stderr,"Memory allocation error.\n");
-        free(stack);
-        exit(EXIT_FAILURE);
-    }
-    if (argc != 2)
-    {
-        fprintf(stderr, "USAGE: monty file\n");
-        exit(EXIT_FAILURE);
-    }
-    
-	file = fopen(argv[1], "r");
-	if (file == NULL)
+	if (argc != 2)
 	{
-        fprintf(stderr,"Error: Can't open file %s", argv[1]);
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
-    }
-    
-    for (current_line = 1; !feof(file); current_line ++)
-    {
-        fgets(instr.opcode, 1024, file);
-        printf("%s",instr.opcode);
-
-        if (interpret(instr) == 0)
-        {
-            fprintf(stderr,"L%d: unknown instruction %s", current_line, instr.opcode);
-            exit(EXIT_FAILURE);
-        }
-        instr.f(&stack, current_line);
-    }
-    fclose(file);
-    free(stack);
-    return(1);
+	}
+	file = fopen(argv[1], "r");
+	info.file = file;
+	if (!file)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+	while (read_line > 0)
+	{
+		content = NULL;
+		read_line = getline(&content, &size, file);
+		info.content = content;
+		counter++;
+		if (read_line > 0)
+		{
+			execute(content, &stack, counter, file);
+		}
+		free(content);
+	}
+	free_stack(stack);
+	fclose(file);
+return (0);
 }

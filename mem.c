@@ -1,16 +1,41 @@
 #include "monty.h"
 
-
-void stack_free(stack_t *stack)
+/**
+ * addnode - add node to the head stack
+ * @head: head of the stack
+ * @n: new_value
+ * Return: no return
+*/
+void addnode(stack_t **head, int n)
 {
-    stack_t *next = stack->next;
 
-    while(next)
-    {
-        stack_t *next = next;
-        next = next->next;
-        free(next);
-    }
+	stack_t *new_node, *aux;
 
-    free(stack);
+	aux = *head;
+	new_node = malloc(sizeof(stack_t));
+	if (new_node == NULL)
+	{ printf("Error\n");
+		exit(0); }
+	if (aux)
+		aux->prev = new_node;
+	new_node->n = n;
+	new_node->next = *head;
+	new_node->prev = NULL;
+	*head = new_node;
+}
+/**
+* free_stack - frees a doubly linked list
+* @head: head of the stack
+*/
+void free_stack(stack_t *head)
+{
+	stack_t *aux;
+
+	aux = head;
+	while (head)
+	{
+		aux = head->next;
+		free(head);
+		head = aux;
+	}
 }
